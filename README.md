@@ -1,4 +1,5 @@
-# Generate_SSH_PEM
+Generate_SSH_PEM[![Build Status](https://travis-ci.org/jackqt/Generate_SSH_PEM.svg?branch=master)](https://travis-ci.org/jackqt/Generate_SSH_PEM)
+==========================
 One Click to generate ssh pem file for login ssh with identity file like Amazon EC2 instance did.
 
 That make system administrators to run it by specify user name, and then it will generate ssh private/public key automaticlly. 
