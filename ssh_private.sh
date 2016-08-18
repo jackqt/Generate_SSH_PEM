@@ -12,7 +12,7 @@ SSH_AUTHRIZED_KEY="authorized_keys"
 
 ETC_SUDOER_USER_FILE=/etc/sudoers.d/users
 
-function startwebserver {
+startwebserver() {
     # Start web server for download the ssh private key
     if [ -d $TMP_WEB_HOME ]
     then
@@ -34,12 +34,12 @@ function startwebserver {
     python -m SimpleHTTPServer 8000 1>&2
 }
 
-function gensshkey {
+gensshkey() {
     su -c "ssh-keygen -b 2048 -t rsa -f $USER_SSH_HOME/$SSH_PRIVATE_KEY -q -N \"\"" -s /bin/sh $USER_NAME
     su -c "cp $USER_SSH_HOME/id_rsa.pub $USER_SSH_HOME/$SSH_AUTHRIZED_KEY" -s /bin/sh $USER_NAME
 }
 
-function adduser {
+adduser() {
     # Create specify user and add into group: adm
     id $USER_NAME 1>/dev/null 2>/dev/null
     if [ $? == 0 ]
@@ -57,7 +57,7 @@ function adduser {
     USER_HOME=$(getent passwd ${USER_NAME}|cut -d: -f6)
     USER_SSH_HOME="$USER_HOME/.ssh"
 }
-function createsshkey {
+createsshkey() {
     # Generate ssh private/public key for the created user
     if [ -f $USER_SSH_HOME/id_rsa ]
     then
@@ -82,7 +82,7 @@ function createsshkey {
         gensshkey
     fi
 }
-function addtosudoer {
+addtosudoer() {
     # Add user into sudoers file
     grep $USER_NAME $ETC_SUDOER_USER_FILE 1>&2
     if [ $? != 0 ]
@@ -96,13 +96,13 @@ EOF
     chmod 400 $ETC_SUDOER_USER_FILE
 }
 
-function showhelp {
+showhelp() {
     echo "Usage: args [-h] [-u username]"
     echo "-h means help"
     echo "-u means specify username"
 }
 
-function main {
+main() {
     adduser
     createsshkey
     addtosudoer
